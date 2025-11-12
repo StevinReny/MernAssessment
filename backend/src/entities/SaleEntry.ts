@@ -13,5 +13,8 @@ export class SaleEntry{
     @OneToMany(()=>SaleItems,(item)=>item.saleEntry)
     saleItems!:SaleItems[]
 
+    @Column({nullable:true})
+    totalPrice!:number
+
     
 }

@@ -14,11 +14,10 @@ export class SaleItems{
     @Column()
     salePrice!:number
 
-    @ManyToOne(()=>SaleEntry,(saleEntry)=>saleEntry.saleItems)
+    @ManyToOne(()=>SaleEntry,(saleEntry)=>saleEntry.saleItems,{onDelete:"CASCADE"})
     saleEntry!:SaleEntry
 
     @ManyToOne(()=>Product,(product)=>product.saleItems)
     product!:Product
 
-    
 }

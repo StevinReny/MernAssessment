@@ -1,6 +1,9 @@
-import { ProductEntryRepo, ProductRepo } from "../config/data-source"
+import { ProductEntryRepo, ProductRepo, SaleEntryRepo, SaleItemRepo } from "../config/data-source"
+import { DataDetails } from "../controllers/SaleController";
 import { Product } from "../entities/Product"
 import { ProductEntry } from "../entities/ProductEntry";
+import { SaleEntry } from "../entities/SaleEntry";
+import { SaleItems } from "../entities/SaleItems";
 import { ApiError } from "../utils/apiError";
 var random = require('random-string-alphanumeric-generator');
 
@@ -64,4 +67,47 @@ export const createProductEntry=async(product:Product,quantity:number,purchaseDa
     await ProductRepo.save(product)
     return res
     
+}
+
+export const createNewSaleEntry=async(saleDate:Date)=>{
+    const newSale=new SaleEntry()
+    newSale.saleDate=saleDate;
+    return await SaleEntryRepo.save(newSale)
+}
+
+export const createNewSaleItemEntry=async(item:DataDetails,saleEntry:SaleEntry)=>{
+
+    const newItem=new SaleItems()
+    const product=await ProductRepo.findOneBy({id:item.product_id})
+    newItem.product=product
+    if(product.currentStock<item.quantity){
+        throw new ApiError("The Product available Quantity is low")
+    }
+    newItem.quantity=item.quantity
+    newItem.saleEntry=saleEntry
+    newItem.salePrice=item.salePrice
+    const newSaleItem= await SaleItemRepo.save(newItem)
+
+    product.currentStock=product.currentStock-item.quantity
+    await ProductRepo.save(product)
+    return newSaleItem
+}
+
+export const updateSaleEntryPrice=async(saleEntry:SaleEntry,price:number)=>{
+    saleEntry.totalPrice=price
+    return await SaleEntryRepo.save(saleEntry)
+}
+
+export const findSaleBillById=async(id:string)=>{
+    let totalPrice=0
+    const sale= await SaleEntryRepo.findOne({where:{id},relations:{saleItems:{product:true}}})
+    // console.log(sale)
+         
+    // const newSale=await SaleEntryRepo.save(sale)
+    // console.log(newSale)
+    return sale
+}
+
+export const findAllBill=async()=>{
+    return await SaleEntryRepo.find({relations:{saleItems:true}})
 }
