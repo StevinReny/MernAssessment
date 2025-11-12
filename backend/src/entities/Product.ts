@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ProductEntry } from "./ProductEntry";
+import { SaleItems } from "./SaleItems";
 
 @Entity()
 export class Product{
@@ -23,4 +25,10 @@ export class Product{
 
     @CreateDateColumn()
     createdAt!:Date
+
+    @OneToMany(()=>ProductEntry,(productEntry)=>productEntry.product)
+    productEntries!:ProductEntry[]
+
+    @OneToMany(()=>SaleItems,(saleItem)=>saleItem.product)
+    saleItems!:SaleItems[]
 }

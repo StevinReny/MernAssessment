@@ -1,6 +1,9 @@
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 import { Product } from "../entities/Product";
+import { ProductEntry } from "../entities/ProductEntry";
+import { SaleEntry } from "../entities/SaleEntry";
+import { SaleItems } from "../entities/SaleItems";
 dotenv.config();
 
 
@@ -16,8 +19,11 @@ export const AppDataSource = new DataSource({
     synchronize: true,
     logging: false,
 
-    entities: [Product],
+    entities: [Product,ProductEntry,SaleEntry,SaleItems],
 });
 
 
 export const ProductRepo=AppDataSource.getRepository(Product)
+export const ProductEntryRepo=AppDataSource.getRepository(ProductEntry)
+export const SaleEntryRepo=AppDataSource.getRepository(SaleEntry)
+export const SaleItemRepo=AppDataSource.getRepository(SaleItems)

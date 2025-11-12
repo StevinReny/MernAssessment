@@ -1,5 +1,6 @@
-import { ProductRepo } from "../config/data-source"
+import { ProductEntryRepo, ProductRepo } from "../config/data-source"
 import { Product } from "../entities/Product"
+import { ProductEntry } from "../entities/ProductEntry";
 import { ApiError } from "../utils/apiError";
 var random = require('random-string-alphanumeric-generator');
 
@@ -49,4 +50,18 @@ export const deleteProduct=async(id:string)=>{
 
     await ProductRepo.remove(producttoDelete)
     return producttoDelete
+}
+
+export const createProductEntry=async(product:Product,quantity:number,purchaseDate:Date,purchasePrice:number)=>{
+    const newEntry=new ProductEntry()
+    newEntry.product=product
+    newEntry.purchaseDate=purchaseDate
+    newEntry.purchasePrice=purchasePrice
+    newEntry.quantity=quantity
+    const res=await ProductEntryRepo.save(newEntry)
+
+    product.currentStock=product.currentStock+quantity
+    await ProductRepo.save(product)
+    return res
+    
 }
