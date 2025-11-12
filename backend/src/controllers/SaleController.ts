@@ -50,6 +50,17 @@ export const findSaleEntry=async(req:Request,res:Response,next:NextFunction)=>{
             totalPrice=totalPrice+item.salePrice
         })
         console.log(totalPrice)
+        if(totalPrice>1000 && totalPrice<2000){
+            const discount=totalPrice*(1/100)
+            totalPrice=totalPrice-discount
+        }
+        else if (totalPrice>2000){
+            const discount=totalPrice*(2/100)
+            totalPrice=totalPrice-discount
+        }
+        else{
+            totalPrice=totalPrice+0
+        }
         sale.totalPrice=totalPrice
         await SaleEntryRepo.save(sale)
         return res.status(200).json({message:"Successfully fetched",info:sale,price:totalPrice})
