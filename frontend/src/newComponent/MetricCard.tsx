@@ -8,7 +8,7 @@ interface MetricscardPropType {
 export const MetricsCard: React.FC <MetricscardPropType> = ({heading, value}) => {
   return (
     <div className="p-5 bg-white rounded-lg shadow-md dark:bg-gray-800 
-    transition-transform duration-300 ease-in-out  hover:shadow-lg">
+    transition-transform duration-300 ease-in-out  hover:shadow-lg max-w-md">
         <div className="text-base text-gray-400 dark:text-gray-300">
             {heading}
         </div>

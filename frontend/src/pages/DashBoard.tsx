@@ -8,13 +8,11 @@ import { useState } from 'react'
 const DashBoard = () => {
     const [number,setNumber]=useState(0)
     const {isPending}=useQuery({
-        queryKey:["allProductss"],
+        queryKey:["productCount"],
         queryFn:async()=>{
-           const response= await axios.get("http://localhost:4000/product/")
+           const response= await axios.get("http://localhost:4000/count")
            console.log(response.data)
-           const result = response.data.info.filter((item: Product) => Number(item.currentStock) > 6);   
-           console.log(result)
-        setNumber(result.length())
+           setNumber(response.data.info)
            return response.data
         },
     })
@@ -22,7 +20,7 @@ const DashBoard = () => {
     
     if(isPending)return <>Loading..</>
   return (
-    <div>
+    <div className=''>
         <MetricsCard heading='No of Low Quantity product' value={number}/>
     </div>
   )

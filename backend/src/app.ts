@@ -3,7 +3,8 @@ import { errorHandler } from "./middlewares/errorHandler";
 import authRoutes from "./routes/auth.routes";
 import productRoutes from "./routes/product.routes";
 import cors from "cors"
-import { findAllBillController } from "./controllers/SaleController";
+import { findAllBillController, todaySaleController } from "./controllers/SaleController";
+import { getProductCount } from "./controllers/ProductController";
 
 const app = express();
 app.use(express.json())
@@ -20,6 +21,8 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript + Express");
 });
 app.use("/bill",findAllBillController)
+app.use("/count",getProductCount)
+app.use("/todayCount",todaySaleController)
 
 app.use("/product",productRoutes)
 

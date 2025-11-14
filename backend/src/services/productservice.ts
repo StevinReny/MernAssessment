@@ -1,3 +1,4 @@
+import { LessThan } from "typeorm";
 import { ProductEntryRepo, ProductRepo, SaleEntryRepo, SaleItemRepo } from "../config/data-source"
 import { DataDetails } from "../controllers/SaleController";
 import { Product } from "../entities/Product"
@@ -110,4 +111,12 @@ export const findSaleBillById=async(id:string)=>{
 
 export const findAllBill=async()=>{
     return await SaleEntryRepo.find({relations:{saleItems:true}})
+}
+
+export const findCount=async()=>{
+    return await ProductRepo.findAndCount({where:{currentStock:LessThan(10)}})
+}
+export const findtodayBill=async()=>{
+    console.log(new Date())
+    return await SaleEntryRepo.find({where:{saleDate:new Date()}})
 }

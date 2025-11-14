@@ -1,6 +1,6 @@
 import { NextFunction,Request,Response } from "express";
 // import { SaleEntry } from "../entities/SaleEntry";
-import { createNewSaleEntry, createNewSaleItemEntry, findAllBill, findSaleBillById, updateSaleEntryPrice } from "../services/productservice";
+import { createNewSaleEntry, createNewSaleItemEntry, findAllBill, findSaleBillById, findtodayBill, updateSaleEntryPrice } from "../services/productservice";
 import { SaleEntryRepo } from "../config/data-source";
 // import { toASCII } from "punycode";
 import { ApiError } from "../utils/apiError";
@@ -25,9 +25,9 @@ export const AddSaleEntry=async(req:Request,res:Response,next:NextFunction)=>{
         
             for(const element of data){
             const item=await createNewSaleItemEntry(element,newSaleEntry)
-
-            totalPrice=totalPrice+(item.salePrice*item.quantity)
+            
             console.log(item)
+            totalPrice=totalPrice+(item.salePrice*item.quantity)
         };
          if(totalPrice>1000 && totalPrice<2000){
              discount=totalPrice*(1/100)
@@ -72,6 +72,16 @@ export const findAllBillController=async(req:Request,res:Response,next:NextFunct
         // console.log("hai")
         const result=await findAllBill()
         return res.status(200).json({message:"Success",info:result})
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const todaySaleController=async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+        const result=await findtodayBill()
+        console.log(result)
+        return res.status(200).json({message:"Success",info:null})
     } catch (error) {
         next(error)
     }

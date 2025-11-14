@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateBody } from "../middlewares/body.validator.middleware";
 import { addProductSchema, prdouctEntrySchema, updateProductSchema } from "../validations/productValidations";
-import { addProductController, deleteProductController, getAllProductsController, getProductByIdController, updateProductController, } from "../controllers/ProductController";
+import { addProductController, deleteProductController, getAllProductsController, getProductByIdController, getProductCount, updateProductController, } from "../controllers/ProductController";
 import { addProductEntryController } from "../controllers/ProductEntryController";
 import { AddSaleEntry, findAllBillController, findSaleEntry } from "../controllers/SaleController";
 import { findSaleBillById } from "../services/productservice";
@@ -17,6 +17,7 @@ productRoutes.delete("/:id",deleteProductController)
 productRoutes.post("/entry",validateBody(prdouctEntrySchema),addProductEntryController)
 productRoutes.get("/sale/:id",findSaleEntry)
 productRoutes.post("/sale",AddSaleEntry)
+
 // productRoutes.get("/allBill",findAllBillController)
 
 export default productRoutes

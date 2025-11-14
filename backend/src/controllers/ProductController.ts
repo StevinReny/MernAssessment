@@ -1,6 +1,6 @@
 import { NextFunction } from "express";
 import {Request,Response} from "express"
-import { createProduct, deleteProduct, findProductById, findProductByName, getAllProduct, updateProductService } from "../services/productservice";
+import { createProduct, deleteProduct, findCount, findProductById, findProductByName, getAllProduct, updateProductService } from "../services/productservice";
 import { ApiError } from "../utils/apiError";
 
 
@@ -75,6 +75,15 @@ export const deleteProductController=async(req:Request,res:Response,next:NextFun
 
         // console.log(deleted)
         return res.status(200).json({message:"Successfully deleted",info:deleted})
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getProductCount=async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+        const [item,count]=await findCount()
+        return res.status(200).json({message:"Success",info:count})
     } catch (error) {
         next(error)
     }
