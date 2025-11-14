@@ -3,11 +3,18 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
 import BillDetails from "./BillDetails"
+import Navbar from "./Navbar"
 
 export interface Bill{
     id:string,
     saleDate:string,
-    totalPrice:null|number
+    totalPrice:null|number,
+    discount:number,
+    saleItems:{
+        id:string,
+        quantity:number,
+        salePrice:number
+    }
 }
 const SeeAllBill = () => {
     const [billId,setBillId]=useState("")
@@ -23,6 +30,8 @@ const SeeAllBill = () => {
 
     if(isPending) return <>Loading ...</>
   return (
+    <div>
+        <Navbar/>
      <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 p-4">
         {open ? <BillDetails billId={billId} onClose={()=>setOpen(false)}/>:
         <div className=" flex flex-col gap-3 ">
@@ -33,6 +42,8 @@ const SeeAllBill = () => {
                 <div className=''>
                     <div>Bill Id:{item.id}</div>
                     <div>Bill Date:{item.saleDate.split("T")[0]}</div>
+                    <div>Amount: {item.totalPrice}</div>
+                    <div>You have saved {item.discount}</div>
                 </div>
                 <div className='flex gap-2'>
                     
@@ -48,6 +59,7 @@ const SeeAllBill = () => {
         <div></div>
     </div>   
 }
+     </div>
      </div>
   )
 }

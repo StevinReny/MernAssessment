@@ -79,13 +79,16 @@ export const createNewSaleItemEntry=async(item:DataDetails,saleEntry:SaleEntry)=
 
     const newItem=new SaleItems()
     const product=await ProductRepo.findOneBy({id:item.product_id})
+    if(!product){
+        throw new ApiError("Invalid product",400)
+    }
     newItem.product=product
     if(product.currentStock<item.quantity){
-        throw new ApiError("The Product available Quantity is low")
+        throw new ApiError(`The ${product.name} available Quantity is ${product.currentStock}`,400)
     }
     newItem.quantity=item.quantity
     newItem.saleEntry=saleEntry
-    newItem.salePrice=item.salePrice
+    newItem.salePrice=product.price
     const newSaleItem= await SaleItemRepo.save(newItem)
 
     product.currentStock=product.currentStock-item.quantity
@@ -93,18 +96,15 @@ export const createNewSaleItemEntry=async(item:DataDetails,saleEntry:SaleEntry)=
     return newSaleItem
 }
 
-export const updateSaleEntryPrice=async(saleEntry:SaleEntry,price:number)=>{
+export const updateSaleEntryPrice=async(saleEntry:SaleEntry,price:number,discount:number)=>{
     saleEntry.totalPrice=price
+    saleEntry.discount=discount
     return await SaleEntryRepo.save(saleEntry)
 }
 
 export const findSaleBillById=async(id:string)=>{
     let totalPrice=0
     const sale= await SaleEntryRepo.findOne({where:{id},relations:{saleItems:{product:true}}})
-    // console.log(sale)
-         
-    // const newSale=await SaleEntryRepo.save(sale)
-    // console.log(newSale)
     return sale
 }
 

@@ -1,5 +1,7 @@
+// import Navbar from '@/newComponent/Navbar'
 import axios from 'axios'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const NewProduct = () => {
@@ -8,7 +10,7 @@ const NewProduct = () => {
     const[taxPercentage,setTaxPercentage]=useState(0)
     const[currentStock,setCurrentStock]=useState(0)
 
-
+    const navigate=useNavigate()
     const handleSubmit=async(e:React.FormEvent)=>{
         e.preventDefault()
         try {
@@ -29,6 +31,7 @@ const NewProduct = () => {
     }
   return (
      <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 flex items-center justify-center p-4">
+      
       <div className="w-full max-w-3xl flex flex-col ">
          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="group">
@@ -112,9 +115,10 @@ const NewProduct = () => {
               type="submit"
               className="w-full group relative bg-zinc-900 text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 disabled:hover:scale-100 border border-stone-600/20 overflow-hidden cursor-pointer"
             >
-              Sign In
+              Insert
             </button>
           </form>
+            <button onClick={()=>navigate("/all") }  className="w-full group relative bg-zinc-900 text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 disabled:hover:scale-100 border border-stone-600/20 overflow-hidden cursor-pointer">Close</button>
     </div>
     </div>
   )

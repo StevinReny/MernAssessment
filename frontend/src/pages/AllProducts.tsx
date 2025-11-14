@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { queryClient } from '@/main'
+import Navbar from '@/newComponent/Navbar'
 import NewEntryStock from '@/newComponent/NewEntryStock'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
-interface Product{
+export interface Product{
     createdAt:string
 currentStock:string
 id:string
@@ -42,6 +43,8 @@ const AllProducts = () => {
     })
     if(isPending) return <>Loading...</>
   return (
+    <div>
+        {!open && <Navbar/>}
         <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 p-4">
              {open ? <NewEntryStock product_id={product_id} onClose={()=>setOpen(false)}/>:
 
@@ -72,6 +75,7 @@ const AllProducts = () => {
         <div></div>
     </div>
 }
+    </div>
     </div>
   )
 }

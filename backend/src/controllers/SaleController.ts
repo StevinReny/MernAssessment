@@ -14,22 +14,33 @@ export interface DataDetails{
 
 export const AddSaleEntry=async(req:Request,res:Response,next:NextFunction)=>{
     let newSaleEntry
-    // let totalPrice=0
+    let totalPrice=0
+    let discount=0
     try {
         const {saleDate,data} =req.body  
         newSaleEntry=await createNewSaleEntry(saleDate)
-        data.forEach(async(element) => {
+        
+            for(const element of data){
             const item=await createNewSaleItemEntry(element,newSaleEntry)
 
+            totalPrice=totalPrice+(item.salePrice*item.quantity)
             console.log(item)
-            // totalPrice=totalPrice+item.salePrice
-        });
-        
-        // console.log(newSaleEntry)
-        // console.log(totalPrice)
-        // const updated=await updateSaleEntryPrice(newSaleEntry,totalPrice)
+        };
+         if(totalPrice>1000 && totalPrice<2000){
+             discount=totalPrice*(1/100)
+            totalPrice=totalPrice-discount
+        }
+        else if (totalPrice>2000){
+             discount=totalPrice*(2/100)
+            totalPrice=totalPrice-discount
+        }
+        else{
+            totalPrice=totalPrice+0
+        }
+   
+        const updated=await updateSaleEntryPrice(newSaleEntry,totalPrice,discount)
 
-        return res.status(200).json({message:"Successfully inserted",info:newSaleEntry})
+        return res.status(200).json({message:"Successfully inserted",info:updated})
     } catch (error) {
         await SaleEntryRepo.remove(newSaleEntry)
         next(error)
@@ -46,23 +57,7 @@ export const findSaleEntry=async(req:Request,res:Response,next:NextFunction)=>{
         if(!sale){
             throw new ApiError("The Sale id is not valid")
         }
-        sale.saleItems.forEach(item=>{
-            totalPrice=totalPrice+item.salePrice
-        })
-        console.log(totalPrice)
-        if(totalPrice>1000 && totalPrice<2000){
-            const discount=totalPrice*(1/100)
-            totalPrice=totalPrice-discount
-        }
-        else if (totalPrice>2000){
-            const discount=totalPrice*(2/100)
-            totalPrice=totalPrice-discount
-        }
-        else{
-            totalPrice=totalPrice+0
-        }
-        sale.totalPrice=totalPrice
-        await SaleEntryRepo.save(sale)
+       
         return res.status(200).json({message:"Successfully fetched",info:sale,price:totalPrice})
     } catch (error) {
         next(error)
@@ -71,7 +66,7 @@ export const findSaleEntry=async(req:Request,res:Response,next:NextFunction)=>{
 
 export const findAllBillController=async(req:Request,res:Response,next:NextFunction)=>{
     try {
-        console.log("hai")
+        // console.log("hai")
         const result=await findAllBill()
         return res.status(200).json({message:"Success",info:result})
     } catch (error) {

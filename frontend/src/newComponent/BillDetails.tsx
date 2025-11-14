@@ -25,6 +25,7 @@ export interface BillItem{
     id:string,
     saleDate:string
     totalPrice:number,
+    discount:number,
     saleItems:NewSaleEntry[]
 
 }
@@ -40,15 +41,17 @@ const BillDetails = ({billId,onClose}:{billId:string,onClose:()=>void}) => {
     if(isPending) return <>Loading..</>
   return (
    <div className='bg-neutral-200 rounded-2xl p-4 max-w-xl'>
-    <div>Sale Date {data.info.saleDate}</div>
-    <div>Total Price {data.price}</div>
+    <div>Sale Date {data.info.saleDate.split("T")[0]}</div>
+    <div>Total Price {data.info.totalPrice}</div>
+    <div>Discount {data.info.discount}</div>
     <div className=''>
-    {data.info.saleItems.map((item:NewSaleEntry,i)=>{
+    {data.info.saleItems.map((item:NewSaleEntry,)=>{
         return(
-            <div key={i} className='bg-white p-5 m-3 rounded-2xl'>
+            <div key={item.id} className='bg-white p-5 m-3 rounded-2xl'>
             <div>Product Name {item.product.name}</div>
             <div>Product Quantity {item.quantity}</div>
             <div>Product Price {item.salePrice}</div>
+            
             </div>
         )
     })}

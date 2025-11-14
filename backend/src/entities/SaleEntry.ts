@@ -16,5 +16,8 @@ export class SaleEntry{
     @Column({nullable:true})
     totalPrice!:number
 
+    @Column({nullable:true})
+    discount!:number
+
     
 }

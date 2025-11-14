@@ -9,7 +9,7 @@ export class SaleItems{
     id!:string
 
     @Column()
-    quantity!:number
+    quantity!:number    
 
     @Column()
     salePrice!:number
