@@ -5,6 +5,7 @@ import NewProduct from './pages/NewProduct';
 import AllProducts from './pages/AllProducts';
 import SeeAllBill from './newComponent/NewSaleEntry';
 import NewSaleEntry1 from './newComponent/NewSaleEntry1';
+import DashBoard from './pages/DashBoard';
 function App() {
   // const [count, setCount] = useState(0)
 
@@ -16,6 +17,7 @@ function App() {
             <Route path="/all" element={<AllProducts/>}/>
              <Route path="/allBill" element={<SeeAllBill/>}/>
              <Route path="/saleEntry" element={<NewSaleEntry1/>}/>
+              <Route path="/dashboard" element={<DashBoard/>}/>
           </Routes>
         </Router>
     </>

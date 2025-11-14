@@ -18,6 +18,8 @@ export const AddSaleEntry=async(req:Request,res:Response,next:NextFunction)=>{
     let discount=0
     try {
         const {saleDate,data} =req.body  
+        console.log(req.body)
+        const remove=data.shift()
         newSaleEntry=await createNewSaleEntry(saleDate)
         
             for(const element of data){
