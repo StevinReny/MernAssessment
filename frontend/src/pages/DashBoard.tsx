@@ -1,23 +1,25 @@
 import { MetricsCard } from '@/newComponent/MetricCard'
 import axios from 'axios'
-import React from 'react'
+
 import type { Product } from './AllProducts'
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
 const DashBoard = () => {
-
-    const {data,isPending}=useQuery({
-        queryKey:["countProduct"],
+    const [number,setNumber]=useState(0)
+    const {isPending}=useQuery({
+        queryKey:["allProductss"],
         queryFn:async()=>{
            const response= await axios.get("http://localhost:4000/product/")
+           console.log(response.data)
+           const result = response.data.info.filter((item: Product) => Number(item.currentStock) > 6);   
+           console.log(result)
+        setNumber(result.length())
            return response.data
         },
     })
-    const number=data.info.filter((item:Product)=>{
-        if(Number(item.currentStock)<10){
-            return item
-        }
-    })
+
+    
     if(isPending)return <>Loading..</>
   return (
     <div>

@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom'
 
 const NewSaleEntry1 = () => {
     const navigate=useNavigate()
-
     const [data1,setData]=useState([{}])
     const [date,setDate]=useState('')
     const [quantity,setQuantity]=useState(0)
@@ -46,6 +45,7 @@ const NewSaleEntry1 = () => {
         {
             quantity: quantity,
             product_id: product.id, 
+            product_name:product.name,
         },
     ]);
     product.currentStock=String(Number(product.currentStock)-quantity)
@@ -85,12 +85,12 @@ const NewSaleEntry1 = () => {
     if(isPending) return <>Loading...</>
 
   return (
-    <div>
+    <div className='min-h-screen flex flex-col items-center  justify-center gap-8'>
     <div>
     <Label>Sale Date</Label>
     <input type="date"  value={date} onChange={(e)=>setDate(e.target.value)}/>
     </div>
-    <div className='flex gap-5'>
+    <div className='flex gap-5 flex-col'>
    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Add Sale</Button>
@@ -99,9 +99,9 @@ const NewSaleEntry1 = () => {
         <DropdownMenuLabel>Avaliable Products</DropdownMenuLabel>
          {data.info.map((item:Product)=>{
             return (
-                <div key={item.id} >
+                <div key={item.id} className='bg-gray-300 p-2'>
                     <DropdownMenuItem onClick={()=>{setProduct(item);
-                        setOpen(true)}}>{item.name}</DropdownMenuItem>
+                        setOpen(true)}} className='hover:bg-white cursor-pointer'>{item.name}</DropdownMenuItem>
                 </div>
             )
          })}
@@ -117,7 +117,19 @@ const NewSaleEntry1 = () => {
             
             </div>}
     </div>
+
     <Button onClick={handleSubmit}>Generate Bill</Button>
+
+    <div>
+        <div>Your current added products are</div>
+        {data1.map((item)=>{
+            return (
+                <div>
+                {item.product_name}:{item.quantity}
+                </div>
+            )
+        })}
+    </div>
     </div>
     </div>
   

@@ -9,7 +9,8 @@ import { ApiError } from "../utils/apiError";
 export interface DataDetails{
     quantity:number,
     product_id:string,
-    salePrice:number
+    salePrice:number,
+    product_name:string,
 }
 
 export const AddSaleEntry=async(req:Request,res:Response,next:NextFunction)=>{
